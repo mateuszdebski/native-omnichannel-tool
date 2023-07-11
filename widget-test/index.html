@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex">
+    <title>Chat widget sample application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
+    <script src="index.js?v=3"></script>
+    <div class="container">
+        <nav class="navbar">
+        </nav>
+
+        <div class="row">
+            <ul class="list-group">
+                <li>
+                    <span>Test chat widget application</span>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="visible: env" class="badge badge-primary badge-pill" style="color: green;"> ✓ </span>
+                    Pick env (widget-ui):
+                    <select data-bind="value: env" id="env">
+                        <option value="staging">Staging</option>
+                        <option value="production">Production</option>
+                    </select>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="visible: envVersion" class="badge badge-primary badge-pill" style="color: green;"> ✓ </span>
+                    Pick env version (1, 2, 3...) - current version on production is 1 (please remember to update this after deployments):
+                    <div>
+                        <input data-bind="value: envVersion" class="form-control form-control-lg" default='1'></input>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="visible: cloud" class="badge badge-primary badge-pill" style="color: green;"> ✓ </span>
+                    Pick ContactWorld region:
+                    <select data-bind="value: cloud" id="cloud">
+                        <option></option>
+                        <option value="itg">Integration</option>
+                        <option value="emea">EMEA</option>
+                        <option value="apac">APAC</option>
+                        <option value="nam">NAM</option>
+                    </select>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="visible: chatWidgetGuid" class="badge badge-primary badge-pill" style="color: green;"> ✓ </span>
+                    Set chat widget guid:
+                    <div>
+                        <input data-bind="value: chatWidgetGuid" class="form-control form-control-lg"></input>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <span data-bind="visible: customHeader" class="badge badge-primary badge-pill" style="color: green;"> ✓ </span>
+                    Set custom header:
+                    <div>
+                        <input data-bind="value: customHeader" class="form-control form-control-lg"></input>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <button onclick="app.startChat()" type="button" class="btn btn-primary btn-lg btn-block">Init chat</button>
+                </li>
+            </ul>
+        </div>
+        <div id="chat-root" style="width: 50px; height: 50px;  max-width: 100%; max-height: 100%; min-height: 0px; min-width: 0px; position: fixed; bottom: 20px; right: 20px; border: 0px; visibility: visible; z-index: 2147483000; overflow: hidden; transition: none 0s ease 0s !important;" />
+    </div>
+    <script type="text/javascript">
+        var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+        window[eventMethod](window.addEventListener ? 'message' : 'onmessage', function(e) {
+            if (e.origin === 'https://cdn.newvoicemedia.com' && e.data && e.data.type === 'VONAGE_CHAT_CONTAINER_RESIZE') {
+                document.getElementById('chat-root').style.width = e.data.width + 'px';
+                document.getElementById('chat-root').style.height = e.data.height + 'px';
+            }
+        }, false);
+    </script>
+</body>
+</html>
